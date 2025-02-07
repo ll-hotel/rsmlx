@@ -9,5 +9,5 @@ pub struct Display {
     raw: *mut c_void,
 }
 
-pub use window::Window;
+pub use window::{Window, Hook};
 pub use image::Image;

@@ -63,35 +63,35 @@ impl Window {
         &self,
         x_event: i32,
         x_mask: i32,
-        callback: WindowHook,
+        callback: Hook,
         callback_param: *mut c_void,
     ) {
         let funct: extern "C" fn();
         match x_event {
             // X11 Key events
             2 | 3 => {
-                let WindowHook::Key(_hook) = callback else {
-                    panic!("invalid window hook: expected WindowHook::Key");
+                let Hook::Key(_hook) = callback else {
+                    panic!("invalid window hook: expected Hook::Key");
                 };
                 funct = unsafe { std::mem::transmute(_hook) };
             }
             // X11 Mouse button events
             4 | 5 => {
-                let WindowHook::MouseButton(_hook) = callback else {
-                    panic!("invalid window hook: expected WindowHook::MouseButton");
+                let Hook::MouseButton(_hook) = callback else {
+                    panic!("invalid window hook: expected Hook::MouseButton");
                 };
                 funct = unsafe { std::mem::transmute(_hook) };
             }
             6 => {
-                let WindowHook::MouseMotion(_hook) = callback else {
-                    panic!("invalid window hook: expected WindowHook::MouseMotion");
+                let Hook::MouseMotion(_hook) = callback else {
+                    panic!("invalid window hook: expected Hook::MouseMotion");
                 };
                 funct = unsafe { std::mem::transmute(_hook) };
             }
             // Generic
             _ => {
-                let WindowHook::Generic(_hook) = callback else {
-                    panic!("invalid window hook: expected WindowHook::Generic");
+                let Hook::Generic(_hook) = callback else {
+                    panic!("invalid window hook: expected Hook::Generic");
                 };
                 funct = unsafe { std::mem::transmute(_hook) };
             }
@@ -109,7 +109,7 @@ impl Drop for Window {
     }
 }
 
-pub enum WindowHook {
+pub enum Hook {
     Key(extern "C" fn(i32, *mut c_void)),                   // 2, 3
     MouseButton(extern "C" fn(i32, i32, i32, *mut c_void)), // 4, 5
     MouseMotion(extern "C" fn(*mut c_void)),                // 6

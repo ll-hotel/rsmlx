@@ -28,6 +28,8 @@ pub struct Image {
     raw: *mut c_void,
 }
 
+pub use window::Hook;
+
 pub use x11::keysym;
 pub use x11::xlib::{
     ButtonPress, ButtonPressMask, ButtonRelease, ButtonReleaseMask, DestroyAll, DestroyNotify,

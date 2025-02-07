@@ -59,13 +59,7 @@ impl Window {
             mlx_expose_hook(self.raw, Some(callback), callback_param);
         }
     }
-    pub fn hook(
-        &self,
-        x_event: i32,
-        x_mask: i32,
-        callback: Hook,
-        callback_param: *mut c_void,
-    ) {
+    pub fn hook(&self, x_event: i32, x_mask: i32, callback: Hook, callback_param: *mut c_void) {
         let funct: extern "C" fn();
         match x_event {
             // X11 Key events

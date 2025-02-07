@@ -1,6 +1,9 @@
 use std::{ffi::c_void, rc::Rc};
 
-use crate::{core::{free, mlx_destroy_display, mlx_init, mlx_loop, mlx_loop_end, mlx_loop_hook}, Display};
+use crate::{
+    core::{free, mlx_destroy_display, mlx_init, mlx_loop, mlx_loop_end, mlx_loop_hook},
+    Display,
+};
 
 impl Display {
     pub fn new() -> Option<Rc<Self>> {

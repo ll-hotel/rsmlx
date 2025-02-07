@@ -1,4 +1,5 @@
 use std::ffi::c_void;
+use std::rc::Rc;
 
 pub mod core;
 mod display;
@@ -9,8 +10,23 @@ pub struct Display {
     raw: *mut c_void,
 }
 
-pub use image::Image;
-pub use window::{Hook, Window};
+pub struct Window {
+    display: Rc<Display>,
+    width: u32,
+    height: u32,
+    raw: *mut c_void,
+}
+
+pub struct Image {
+    display: Rc<Display>,
+    width: u32,
+    height: u32,
+    bpp: u32,
+    size_line: u32,
+    endian: u32,
+    addr: *mut i8,
+    raw: *mut c_void,
+}
 
 pub use x11::keysym;
 pub use x11::xlib::{

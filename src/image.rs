@@ -1,32 +1,20 @@
-use std::{ffi::c_void, rc::Rc};
+use std::rc::Rc;
 
 use crate::{
     core::{mlx_destroy_image, mlx_get_data_addr, mlx_new_image},
-    Display,
+    Display, Image
 };
 
-pub struct Image {
-    display: Rc<Display>,
-    width: u32,
-    height: u32,
-    bpp: u32,
-    size_line: u32,
-    endian: u32,
-    addr: *mut i8,
-    raw: *mut c_void,
-}
 impl Image {
     pub fn new(display: Rc<Display>, width: u32, height: u32) -> Option<Self> {
-        let img_ptr = unsafe { mlx_new_image(display.raw, width as i32, height as i32) };
-        if img_ptr.is_null() {
-            return None;
-        }
+        let img_ptr = unsafe { mlx_new_image(display.raw, width as i32, height as i32).as_mut()? };
         let (mut bpp, mut size_line, mut endian) = (0, 0, 0);
-        let addr = unsafe { mlx_get_data_addr(img_ptr, &mut bpp, &mut size_line, &mut endian) };
-        if addr.is_null() {
+        let Some(addr) =
+            (unsafe { mlx_get_data_addr(img_ptr, &mut bpp, &mut size_line, &mut endian).as_mut() })
+        else {
             unsafe { mlx_destroy_image(display.raw, img_ptr) };
             return None;
-        }
+        };
         Some(Self {
             display,
             width,

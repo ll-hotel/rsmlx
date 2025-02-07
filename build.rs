@@ -8,7 +8,9 @@ fn main() {
         .args(&mut ["-C", "minilibx-linux"])
         .output()
         .expect("failed to spawn make command")
-        .status.success() {
+        .status
+        .success()
+    {
         panic!("failed to make C minilibx-linux library");
     }
 
